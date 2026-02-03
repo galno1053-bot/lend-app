@@ -257,7 +257,7 @@ export default function BorrowForm() {
       <div className="space-y-2">
         <h2 className="font-display text-2xl">Ajukan Pinjaman</h2>
         <p className="text-sm text-white/60">
-          Collateral ke IDR manual. LTV max 70%, liquidasi jika LTV >= 95%.
+          Collateral ke IDR manual. LTV max 70%, liquidasi jika LTV &gt;= 95%.
         </p>
       </div>
 
