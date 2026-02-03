@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
-    "@pinjaman/db": "git+https://github.com/galno1053-bot/lend-contract.git#path:packages/db",
-    "@pinjaman/shared": "git+https://github.com/galno1053-bot/lend-contract.git#path:packages/shared",
+    "@pinjaman/db": "file:./core/packages/db",
+    "@pinjaman/shared": "file:./core/packages/shared",
     "@tanstack/react-query": "^5.51.0",
     "clsx": "^2.1.1",
     "next": "14.2.5",
