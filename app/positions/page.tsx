@@ -10,7 +10,7 @@ import { CONTRACT_ADDRESS } from "../../lib/config";
 export default function PositionsPage() {
   const { address, isConnected } = useAccount();
 
-  const { data: ids } = useReadContract({
+  const { data } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: hybridLoanManagerAbi,
     functionName: "getUserPositions",
@@ -18,8 +18,10 @@ export default function PositionsPage() {
     query: { enabled: Boolean(address) }
   });
 
+  const ids = Array.isArray(data) ? (data as readonly bigint[]) : [];
+
   const positionCalls =
-    ids?.map((id) => ({
+    ids.map((id) => ({
       address: CONTRACT_ADDRESS,
       abi: hybridLoanManagerAbi,
       functionName: "positions" as const,
@@ -32,7 +34,7 @@ export default function PositionsPage() {
   });
 
   const items =
-    (ids ?? []).flatMap((id, index) => {
+    ids.flatMap((id, index) => {
       const position = positions.data?.[index]?.result as any;
       if (!position) return [];
       return [
