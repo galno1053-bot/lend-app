@@ -1,4 +1,5 @@
 import { base, baseSepolia } from "viem/chains";
+import type { Chain } from "viem";
 
 export const TARGET_CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID ?? baseSepolia.id);
 export const CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ??
@@ -9,4 +10,4 @@ export const USDC_DECIMALS = Number(process.env.NEXT_PUBLIC_USDC_DECIMALS ?? 6);
 
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
-export const CHAINS = [base, baseSepolia];
+export const CHAINS: [Chain, ...Chain[]] = [base, baseSepolia];
