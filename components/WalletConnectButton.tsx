@@ -1,7 +1,7 @@
 "use client";
 
 import { useAccount, useConnect, useDisconnect, useSwitchChain, useChainId } from "wagmi";
-import { injected } from "wagmi/connectors";
+import { injected } from "wagmi/connectors/injected";
 import { TARGET_CHAIN_ID } from "../lib/config";
 
 export default function WalletConnectButton() {
