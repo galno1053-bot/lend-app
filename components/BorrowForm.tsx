@@ -388,7 +388,7 @@ export default function BorrowForm({
           <span className="text-sm text-slate-600">{t("label_collateral_amount")}</span>
           <input
             className={fieldClass("collateralAmount")}
-            placeholder={token === "ETH" ? "0.5" : "1000"}
+            placeholder="0"
             {...form.register("collateralAmount")}
           />
           {showError("collateralAmount") && (
@@ -408,7 +408,7 @@ export default function BorrowForm({
           <div className="relative">
             <input
               className={fieldClass("requestedIdr", "pr-16")}
-              placeholder="10.000.000"
+              placeholder="0"
               {...form.register("requestedIdr")}
             />
             <button
