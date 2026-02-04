@@ -314,11 +314,8 @@ export default function BorrowForm({
 
   return (
     <form onSubmit={onSubmit} className="glass-card p-8 space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="space-y-2">
         <h2 className="font-display text-2xl">Apply for a Loan</h2>
-        <div className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-          APR 5% fixed
-        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -380,21 +377,24 @@ export default function BorrowForm({
 
       <div className="glass-card p-5 space-y-4">
         <div className="flex items-center justify-between">
-          <div>
-            <div className="text-sm text-slate-600">LTV</div>
-          </div>
-          <div
-            className={`rounded-full px-3 py-1 text-xs ${
-              ltvPct >= 90
-                ? "bg-rose-100 text-rose-600"
-                : ltvPct >= 80
-                  ? "bg-orange-100 text-orange-700"
-                  : ltvPct >= 70
-                    ? "bg-yellow-100 text-yellow-700"
-                    : "bg-emerald-100 text-emerald-600"
-            }`}
-          >
-            {Number.isFinite(ltvPct) ? `${ltvPct.toFixed(2)}%` : "-"}
+          <div className="text-sm text-slate-600">LTV</div>
+          <div className="flex items-center gap-2">
+            <div className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+              APR 5% fixed
+            </div>
+            <div
+              className={`rounded-full px-3 py-1 text-xs ${
+                ltvPct >= 90
+                  ? "bg-rose-100 text-rose-600"
+                  : ltvPct >= 80
+                    ? "bg-orange-100 text-orange-700"
+                    : ltvPct >= 70
+                      ? "bg-yellow-100 text-yellow-700"
+                      : "bg-emerald-100 text-emerald-600"
+              }`}
+            >
+              {Number.isFinite(ltvPct) ? `${ltvPct.toFixed(2)}%` : "-"}
+            </div>
           </div>
         </div>
 
