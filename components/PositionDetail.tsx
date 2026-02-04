@@ -73,7 +73,7 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
       });
       await publicClient.waitForTransactionReceipt({ hash });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Gagal request repay");
+      setError(err instanceof Error ? err.message : "Repay request failed");
     } finally {
       setLoading(false);
     }
@@ -92,18 +92,18 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
       });
       await publicClient.waitForTransactionReceipt({ hash });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Gagal withdraw");
+      setError(err instanceof Error ? err.message : "Withdraw failed");
     } finally {
       setLoading(false);
     }
   };
 
   if (!data) {
-    return <div className="text-sm text-slate-500">Memuat posisi...</div>;
+    return <div className="text-sm text-slate-500">Loading position...</div>;
   }
 
   if (address && data?.[1]?.toLowerCase() !== address.toLowerCase()) {
-    return <div className="text-sm text-rose-600">Posisi ini bukan milik wallet kamu.</div>;
+    return <div className="text-sm text-rose-600">This position does not belong to your wallet.</div>;
   }
 
   return (
@@ -150,7 +150,7 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
             disabled={loading}
             className="rounded-xl bg-amber-300 text-slate-900 px-4 py-2 text-sm font-semibold"
           >
-            Saya sudah transfer pelunasan
+            I have sent repayment
           </button>
         )}
         {status === 3 && (
@@ -159,7 +159,7 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
             disabled={loading}
             className="rounded-xl bg-emerald-400 text-slate-900 px-4 py-2 text-sm font-semibold"
           >
-            Ambil jaminan
+            Withdraw collateral
           </button>
         )}
       </div>

@@ -7,9 +7,9 @@ import { useState } from "react";
 import WalletConnectButton from "./WalletConnectButton";
 
 const NAV_ITEMS = [
-  { label: "Rupiah Loan", href: "/borrow" },
+  { label: "IDR Loan", href: "/borrow" },
   { label: "Crypto Loan", href: "/crypto-loan" },
-  { label: "My Loan", href: "/positions" }
+  { label: "My Loans", href: "/positions" }
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {

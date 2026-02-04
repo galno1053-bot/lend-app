@@ -13,7 +13,7 @@ type PositionItem = {
 
 export default function PositionsList({ items }: { items: PositionItem[] }) {
   if (!items.length) {
-    return <div className="text-sm text-slate-500">Belum ada posisi.</div>;
+    return <div className="text-sm text-slate-500">No positions yet.</div>;
   }
 
   return (

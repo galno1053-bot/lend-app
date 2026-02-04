@@ -10,7 +10,7 @@ export default function PositionPage() {
 
   return (
     <section className="max-w-5xl">
-      <h1 className="font-display text-2xl mb-4">Detail Loan #{idParam}</h1>
+      <h1 className="font-display text-2xl mb-4">Loan Details #{idParam}</h1>
       <PositionDetail positionId={positionId} />
     </section>
   );

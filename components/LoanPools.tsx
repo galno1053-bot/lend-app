@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import clsx from "clsx";
 
@@ -14,15 +14,15 @@ type Pool = {
 const POOLS: Pool[] = [
   {
     token: "ETH",
-    title: "ETH → IDR",
-    subtitle: "Collateral ETH",
-    description: "LTV max 70% • Liquidasi 95% • APR simple interest"
+    title: "ETH -> IDR",
+    subtitle: "ETH collateral",
+    description: "LTV max 70% - Liquidation 95% - APR simple interest"
   },
   {
     token: "USDC",
-    title: "USDC → IDR",
-    subtitle: "Collateral USDC",
-    description: "LTV max 70% • Liquidasi 95% • APR simple interest"
+    title: "USDC -> IDR",
+    subtitle: "USDC collateral",
+    description: "LTV max 70% - Liquidation 95% - APR simple interest"
   }
 ];
 

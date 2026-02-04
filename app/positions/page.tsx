@@ -47,9 +47,9 @@ export default function PositionsPage() {
 
   return (
     <section>
-      <h1 className="font-display text-2xl mb-4">My Loan</h1>
+      <h1 className="font-display text-2xl mb-4">My Loans</h1>
       {!isConnected ? (
-        <div className="text-slate-500">Connect wallet untuk melihat posisi.</div>
+        <div className="text-slate-500">Connect wallet to view your positions.</div>
       ) : (
         <PositionsList items={items} />
       )}

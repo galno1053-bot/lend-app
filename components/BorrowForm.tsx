@@ -23,12 +23,12 @@ import { usePrices } from "../hooks/usePrices";
 
 const schema = z.object({
   token: z.enum(["ETH", "USDC"]),
-  collateralAmount: z.string().min(1, "Collateral wajib diisi"),
-  requestedIdr: z.string().min(1, "Jumlah IDR wajib diisi"),
-  recipientName: z.string().min(2, "Nama penerima wajib diisi"),
-  bankName: z.string().min(2, "Nama bank wajib diisi"),
-  accountNumber: z.string().min(5, "Nomor rekening wajib diisi"),
-  acknowledgeRisk: z.boolean().refine((val) => val, "Wajib disetujui")
+  collateralAmount: z.string().min(1, "Collateral amount is required"),
+  requestedIdr: z.string().min(1, "Loan amount is required"),
+  recipientName: z.string().min(2, "Recipient name is required"),
+  bankName: z.string().min(2, "Bank name is required"),
+  accountNumber: z.string().min(5, "Account number is required"),
+  acknowledgeRisk: z.boolean().refine((val) => val, "Required")
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -173,45 +173,45 @@ export default function BorrowForm({
     setError(null);
 
     if (!isConnected || !address) {
-      setError("Connect wallet terlebih dahulu.");
+      setError("Please connect your wallet.");
       return;
     }
 
     if (chainId !== TARGET_CHAIN_ID) {
-      setError("Network salah. Silakan switch ke Base.");
+      setError("Wrong network. Please switch to Base.");
       return;
     }
 
     if (!publicClient) {
-      setError("Public client belum siap.");
+      setError("Public client is not ready.");
       return;
     }
 
     if (isFxStale.data === true) {
-      setError("FX rate stale. Coba lagi nanti.");
+      setError("FX rate is stale. Please try again later.");
       return;
     }
 
     if (requestedIdrBn === 0n || collateralAmountBn === 0n) {
-      setError("Jumlah collateral dan pinjaman wajib diisi.");
+      setError("Collateral and loan amounts are required.");
       return;
     }
 
     if (maxBorrowIdr.data && requestedIdrBn > maxBorrowIdr.data) {
-      setError("Jumlah pinjaman melebihi max borrow (LTV 70%).");
+      setError("Loan amount exceeds max borrow (LTV 70%).");
       return;
     }
 
     if (values.token === "ETH" && ethBalance.data?.value) {
       if (collateralAmountBn > ethBalance.data.value) {
-        setError("Saldo ETH tidak mencukupi.");
+        setError("Insufficient ETH balance.");
         return;
       }
     }
 
     if (values.token === "USDC" && usdcBalance.data?.value) {
       if (collateralAmountBn > usdcBalance.data.value) {
-        setError("Saldo USDC tidak mencukupi.");
+        setError("Insufficient USDC balance.");
         return;
       }
     }
@@ -255,7 +255,7 @@ export default function BorrowForm({
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.error ?? "Gagal simpan bank details");
+        throw new Error(data.error ?? "Failed to save bank details");
       }
 
       if (values.token === "ETH") {
@@ -305,7 +305,7 @@ export default function BorrowForm({
         router.push(`/positions/${positionId?.toString() ?? ""}`);
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Terjadi kesalahan";
+      const message = err instanceof Error ? err.message : "Something went wrong";
       setError(message);
     } finally {
       setLoading(false);
@@ -315,7 +315,7 @@ export default function BorrowForm({
   return (
     <form onSubmit={onSubmit} className="glass-card p-8 space-y-6">
       <div className="space-y-2">
-        <h2 className="font-display text-2xl">Ajukan Pinjaman</h2>
+        <h2 className="font-display text-2xl">Apply for a Loan</h2>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -335,7 +335,7 @@ export default function BorrowForm({
         </label>
 
         <label className="space-y-2">
-          <span className="text-sm text-slate-600">Jumlah Collateral</span>
+          <span className="text-sm text-slate-600">Collateral Amount</span>
           <input
             className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
             placeholder={token === "ETH" ? "0.5" : "1000"}
@@ -351,7 +351,7 @@ export default function BorrowForm({
         </label>
 
         <label className="space-y-2 md:col-span-2">
-          <span className="text-sm text-slate-600">Jumlah Pinjaman (IDR)</span>
+          <span className="text-sm text-slate-600">Loan Amount (IDR)</span>
           <div className="relative">
             <input
               className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 pr-16"
@@ -412,25 +412,25 @@ export default function BorrowForm({
 
         <div className="grid gap-3 md:grid-cols-3 text-sm">
           <div>
-            <div className="text-xs text-slate-500">Nilai Collateral</div>
+            <div className="text-xs text-slate-500">Collateral Value</div>
             <div className="font-semibold">{formatIdr(collateralValue)} IDR</div>
           </div>
           <div>
-            <div className="text-xs text-slate-500">Pinjaman</div>
+            <div className="text-xs text-slate-500">Loan</div>
             <div className="font-semibold">{formatIdr(requestedIdrBn)} IDR</div>
           </div>
           <div>
-            <div className="text-xs text-slate-500">Estimasi Debt (1Y)</div>
+            <div className="text-xs text-slate-500">Estimated Debt (1Y)</div>
             <div className="font-semibold">{formatIdr(debtEstimated)} IDR</div>
           </div>
         </div>
       </div>
 
       <div className="space-y-4">
-        <h3 className="font-display text-lg">Detail Rekening</h3>
+        <h3 className="font-display text-lg">Bank Details</h3>
         <div className="grid gap-4 md:grid-cols-2">
           <label className="space-y-2">
-            <span className="text-sm text-slate-600">Nama Penerima</span>
+            <span className="text-sm text-slate-600">Recipient Name</span>
             <input
               className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
               {...form.register("recipientName")}
@@ -450,7 +450,7 @@ export default function BorrowForm({
             </select>
           </label>
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm text-slate-600">Nomor Rekening</span>
+            <span className="text-sm text-slate-600">Account Number</span>
             <input
               className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
               {...form.register("accountNumber")}
@@ -462,7 +462,7 @@ export default function BorrowForm({
       <div className="space-y-3">
         <label className="flex items-start gap-3 text-sm text-slate-600">
           <input type="checkbox" className="mt-1" {...form.register("acknowledgeRisk")} />
-          Saya paham risiko liquidasi jika LTV mencapai 95%.
+          I understand the liquidation risk if LTV reaches 95%.
         </label>
       </div>
 
@@ -473,7 +473,7 @@ export default function BorrowForm({
         disabled={loading}
         className="w-full rounded-xl bg-emerald-400 text-slate-900 py-3 font-semibold"
       >
-        {loading ? "Memproses..." : "Ajukan Pinjaman"}
+        {loading ? "Processing..." : "Submit Loan Request"}
       </button>
     </form>
   );

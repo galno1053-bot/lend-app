@@ -10,7 +10,7 @@ export default function StatusStepper({ status }: { status: number }) {
   if (label === "LIQUIDATED") {
     return (
       <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
-        Posisi telah dilikuidasi.
+        Position has been liquidated.
       </div>
     );
   }
