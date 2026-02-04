@@ -1,16 +1,19 @@
 "use client";
 
-import { statusToLabel } from "../lib/utils";
+import { StatusKey, statusToKey } from "../lib/utils";
+import { useI18n } from "./LanguageProvider";
+import { TranslationKey } from "../lib/i18n";
 
-const STEPS = ["PAYOUT_PENDING", "ACTIVE", "REPAY_REQUESTED", "CLOSED"];
+const STEPS: StatusKey[] = ["payout_pending", "active", "repay_requested", "closed"];
 
 export default function StatusStepper({ status }: { status: number }) {
-  const label = statusToLabel(status);
+  const { t } = useI18n();
+  const label = statusToKey(status);
 
-  if (label === "LIQUIDATED") {
+  if (label === "liquidated") {
     return (
       <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
-        Position has been liquidated.
+        {t("liquidated_notice")}
       </div>
     );
   }
@@ -26,7 +29,7 @@ export default function StatusStepper({ status }: { status: number }) {
               isActive ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-500"
             }`}
           >
-            {step.replace("_", " ")}
+            {t(`status_${step}` as TranslationKey)}
           </div>
         );
       })}

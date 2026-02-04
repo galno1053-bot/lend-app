@@ -1,31 +1,26 @@
 ﻿"use client";
 
 import clsx from "clsx";
+import { useI18n } from "./LanguageProvider";
 
 type Token = "ETH" | "USDC";
 
 type Pool = {
   token: Token;
-  title: string;
-  subtitle: string;
-  description: string;
-  aprBadge: string;
+  titleKey: "pool_eth_title" | "pool_usdc_title";
+  subtitleKey: "pool_eth_subtitle" | "pool_usdc_subtitle";
 };
 
 const POOLS: Pool[] = [
   {
     token: "ETH",
-    title: "ETH \u2192 IDR",
-    subtitle: "ETH collateral",
-    description: "LTV max 70% - Liquidation 95% - Simple interest",
-    aprBadge: "APR 5% fixed"
+    titleKey: "pool_eth_title",
+    subtitleKey: "pool_eth_subtitle"
   },
   {
     token: "USDC",
-    title: "USDC \u2192 IDR",
-    subtitle: "USDC collateral",
-    description: "LTV max 70% - Liquidation 95% - Simple interest",
-    aprBadge: "APR 5% fixed"
+    titleKey: "pool_usdc_title",
+    subtitleKey: "pool_usdc_subtitle"
   }
 ];
 
@@ -36,6 +31,8 @@ export default function LoanPools({
   selected?: Token | null;
   onSelect?: (token: Token) => void;
 }) {
+  const { t } = useI18n();
+
   return (
     <div className="grid gap-4">
       {POOLS.map((pool) => {
@@ -52,12 +49,12 @@ export default function LoanPools({
           >
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-lg font-semibold text-slate-900">{pool.title}</div>
-                <div className="text-xs text-slate-500 mt-1">{pool.subtitle}</div>
+                <div className="text-lg font-semibold text-slate-900">{t(pool.titleKey)}</div>
+                <div className="text-xs text-slate-500 mt-1">{t(pool.subtitleKey)}</div>
               </div>
               <div className="flex flex-col items-end gap-2">
                 <div className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-                  {pool.aprBadge}
+                  {t("apr_badge")}
                 </div>
                 <div
                   className={clsx(
@@ -80,7 +77,7 @@ export default function LoanPools({
                 </div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 mt-3">{pool.description}</p>
+            <p className="text-xs text-slate-500 mt-3">{t("pool_description")}</p>
           </button>
         );
       })}

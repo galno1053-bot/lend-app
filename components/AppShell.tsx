@@ -5,16 +5,19 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useState } from "react";
 import WalletConnectButton from "./WalletConnectButton";
+import { useI18n } from "./LanguageProvider";
+import { TranslationKey } from "../lib/i18n";
 
-const NAV_ITEMS = [
-  { label: "IDR Loan", href: "/borrow" },
-  { label: "Crypto Loan", href: "/crypto-loan" },
-  { label: "My Loans", href: "/positions" }
+const NAV_ITEMS: Array<{ labelKey: TranslationKey; href: string }> = [
+  { labelKey: "nav_idr_loan", href: "/borrow" },
+  { labelKey: "nav_crypto_loan", href: "/crypto-loan" },
+  { labelKey: "nav_my_loans", href: "/positions" }
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { lang, setLang, t } = useI18n();
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -41,7 +44,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   )}
                 >
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               );
             })}
@@ -61,7 +64,29 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className="hidden md:block text-sm text-slate-500"></div>
               </div>
-              <div className="hidden md:block">
+              <div className="hidden md:flex items-center gap-3">
+                <div className="inline-flex rounded-full border border-slate-200 bg-white p-0.5 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => setLang("en")}
+                    className={clsx(
+                      "rounded-full px-2 py-1 font-semibold",
+                      lang === "en" ? "bg-emerald-500 text-white" : "text-slate-500"
+                    )}
+                  >
+                    EN
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLang("id")}
+                    className={clsx(
+                      "rounded-full px-2 py-1 font-semibold",
+                      lang === "id" ? "bg-emerald-500 text-white" : "text-slate-500"
+                    )}
+                  >
+                    ID
+                  </button>
+                </div>
                 <WalletConnectButton />
               </div>
               <button
@@ -97,11 +122,33 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                       )}
                     >
                       <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                      {item.label}
+                      {t(item.labelKey)}
                     </Link>
                   );
                 })}
-                <div className="pt-3 border-t border-slate-200 flex justify-end">
+                <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
+                  <div className="inline-flex rounded-full border border-slate-200 bg-white p-0.5 text-xs">
+                    <button
+                      type="button"
+                      onClick={() => setLang("en")}
+                      className={clsx(
+                        "rounded-full px-2 py-1 font-semibold",
+                        lang === "en" ? "bg-emerald-500 text-white" : "text-slate-500"
+                      )}
+                    >
+                      EN
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLang("id")}
+                      className={clsx(
+                        "rounded-full px-2 py-1 font-semibold",
+                        lang === "id" ? "bg-emerald-500 text-white" : "text-slate-500"
+                      )}
+                    >
+                      ID
+                    </button>
+                  </div>
                   <WalletConnectButton />
                 </div>
               </div>

@@ -6,13 +6,16 @@ import { formatUnits, zeroAddress } from "viem";
 import { formatIdr } from "@pinjaman/shared";
 import { hybridLoanManagerAbi } from "@pinjaman/shared";
 import { CONTRACT_ADDRESS, USDC_DECIMALS } from "../lib/config";
-import { buildRepayRef, statusToLabel } from "../lib/utils";
+import { buildRepayRef, statusToKey } from "../lib/utils";
 import StatusStepper from "./StatusStepper";
+import { useI18n } from "./LanguageProvider";
+import { TranslationKey } from "../lib/i18n";
 
 export default function PositionDetail({ positionId }: { positionId: bigint }) {
   const { address } = useAccount();
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContract();
+  const { t } = useI18n();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -73,7 +76,7 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
       });
       await publicClient.waitForTransactionReceipt({ hash });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Repay request failed");
+      setError(err instanceof Error ? err.message : t("error_repay_failed"));
     } finally {
       setLoading(false);
     }
@@ -92,18 +95,18 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
       });
       await publicClient.waitForTransactionReceipt({ hash });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Withdraw failed");
+      setError(err instanceof Error ? err.message : t("error_withdraw_failed"));
     } finally {
       setLoading(false);
     }
   };
 
   if (!data) {
-    return <div className="text-sm text-slate-500">Loading position...</div>;
+    return <div className="text-sm text-slate-500">{t("loading_position")}</div>;
   }
 
   if (address && data?.[1]?.toLowerCase() !== address.toLowerCase()) {
-    return <div className="text-sm text-rose-600">This position does not belong to your wallet.</div>;
+    return <div className="text-sm text-rose-600">{t("not_owner")}</div>;
   }
 
   return (
@@ -112,32 +115,34 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">Principal</div>
+          <div className="text-xs text-slate-500">{t("label_principal")}</div>
           <div className="text-lg font-semibold">{formatIdr(data[4] as bigint)} IDR</div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">Debt Now</div>
+          <div className="text-xs text-slate-500">{t("label_debt_now")}</div>
           <div className="text-lg font-semibold">{formatIdr(debt.data ?? 0n)} IDR</div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">Collateral</div>
+          <div className="text-xs text-slate-500">{t("label_collateral")}</div>
           <div className="text-lg font-semibold">
             {formattedCollateral} {tokenLabel}
           </div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">Collateral Value</div>
+          <div className="text-xs text-slate-500">{t("label_collateral_value")}</div>
           <div className="text-lg font-semibold">{formatIdr(collateralValue.data ?? 0n)} IDR</div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">LTV Now</div>
+          <div className="text-xs text-slate-500">{t("label_ltv_now")}</div>
           <div className="text-lg font-semibold">
             {ltv.data ? `${(Number(ltv.data) / 100).toFixed(2)}%` : "-"}
           </div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">Status</div>
-          <div className="text-lg font-semibold">{statusToLabel(status)}</div>
+          <div className="text-xs text-slate-500">{t("label_status")}</div>
+          <div className="text-lg font-semibold">
+            {t(`status_${statusToKey(status)}` as TranslationKey)}
+          </div>
         </div>
       </div>
 
@@ -150,7 +155,7 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
             disabled={loading}
             className="rounded-xl bg-amber-300 text-slate-900 px-4 py-2 text-sm font-semibold"
           >
-            I have sent repayment
+            {t("button_repay_sent")}
           </button>
         )}
         {status === 3 && (
@@ -159,7 +164,7 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
             disabled={loading}
             className="rounded-xl bg-emerald-400 text-slate-900 px-4 py-2 text-sm font-semibold"
           >
-            Withdraw collateral
+            {t("button_withdraw")}
           </button>
         )}
       </div>

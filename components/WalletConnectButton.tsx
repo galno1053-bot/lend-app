@@ -3,6 +3,7 @@
 import { useAccount, useConnect, useDisconnect, useSwitchChain, useChainId } from "wagmi";
 import { injected } from "wagmi/connectors";
 import { TARGET_CHAIN_ID } from "../lib/config";
+import { useI18n } from "./LanguageProvider";
 
 export default function WalletConnectButton() {
   const { address, isConnected } = useAccount();
@@ -10,6 +11,7 @@ export default function WalletConnectButton() {
   const { disconnect } = useDisconnect();
   const { switchChain } = useSwitchChain();
   const chainId = useChainId();
+  const { t } = useI18n();
 
   if (!isConnected) {
     return (
@@ -18,7 +20,7 @@ export default function WalletConnectButton() {
         onClick={() => connect({ connector: injected() })}
         disabled={isPending}
       >
-        {isPending ? "Connecting..." : "Connect Wallet"}
+        {isPending ? t("wallet_connecting") : t("wallet_connect")}
       </button>
     );
   }
@@ -35,14 +37,14 @@ export default function WalletConnectButton() {
           className="rounded-full bg-amber-400 text-slate-900 px-4 py-2 text-xs font-semibold"
           onClick={() => switchChain({ chainId: TARGET_CHAIN_ID })}
         >
-          Switch Network
+          {t("wallet_switch")}
         </button>
       ) : (
         <button
           className="rounded-full border border-slate-200 px-4 py-2 text-xs text-slate-600 hover:bg-slate-100"
           onClick={() => disconnect()}
         >
-          Disconnect
+          {t("wallet_disconnect")}
         </button>
       )}
     </div>

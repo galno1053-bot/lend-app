@@ -4,9 +4,11 @@ import PositionsList from "../../components/PositionsList";
 import { useAccount, useReadContract, useReadContracts } from "wagmi";
 import { hybridLoanManagerAbi } from "@pinjaman/shared";
 import { CONTRACT_ADDRESS } from "../../lib/config";
+import { useI18n } from "../../components/LanguageProvider";
 
 export default function PositionsPage() {
   const { address, isConnected } = useAccount();
+  const { t } = useI18n();
 
   const { data } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -47,9 +49,9 @@ export default function PositionsPage() {
 
   return (
     <section>
-      <h1 className="font-display text-2xl mb-4">My Loans</h1>
+      <h1 className="font-display text-2xl mb-4">{t("my_loans_title")}</h1>
       {!isConnected ? (
-        <div className="text-slate-500">Connect wallet to view your positions.</div>
+        <div className="text-slate-500">{t("connect_to_view")}</div>
       ) : (
         <PositionsList items={items} />
       )}

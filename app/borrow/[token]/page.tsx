@@ -1,18 +1,32 @@
-﻿import Link from "next/link";
-import { redirect } from "next/navigation";
+﻿"use client";
+
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import BorrowForm from "../../../components/BorrowForm";
+import { useI18n } from "../../../components/LanguageProvider";
 
 const TOKEN_MAP: Record<string, "ETH" | "USDC"> = {
   eth: "ETH",
   usdc: "USDC"
 };
 
-export default function BorrowTokenPage({ params }: { params: { token: string } }) {
-  const key = params.token?.toLowerCase();
+export default function BorrowTokenPage() {
+  const router = useRouter();
+  const { t } = useI18n();
+  const params = useParams();
+  const tokenParam = Array.isArray(params?.token) ? params.token[0] : params?.token;
+  const key = tokenParam?.toLowerCase();
   const token = key ? TOKEN_MAP[key] : undefined;
 
+  useEffect(() => {
+    if (!token) {
+      router.replace("/borrow");
+    }
+  }, [token, router]);
+
   if (!token) {
-    redirect("/borrow");
+    return null;
   }
 
   return (
@@ -22,7 +36,7 @@ export default function BorrowTokenPage({ params }: { params: { token: string } 
           href="/borrow"
           className="rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600 hover:bg-slate-100"
         >
-          &larr; Back
+          &larr; {t("back")}
         </Link>
       </div>
 

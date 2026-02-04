@@ -20,18 +20,17 @@ import { buildBankDetailsMessage, computeOffchainRefHash, formatIdr, parseIdrToB
 import { CONTRACT_ADDRESS, TARGET_CHAIN_ID, USDC_ADDRESS, USDC_DECIMALS } from "../lib/config";
 import { hybridLoanManagerAbi } from "@pinjaman/shared";
 import { usePrices } from "../hooks/usePrices";
+import { useI18n } from "./LanguageProvider";
 
-const schema = z.object({
-  token: z.enum(["ETH", "USDC"]),
-  collateralAmount: z.string().min(1, "Collateral amount is required"),
-  requestedIdr: z.string().min(1, "Loan amount is required"),
-  recipientName: z.string().min(2, "Recipient name is required"),
-  bankName: z.string().min(2, "Bank name is required"),
-  accountNumber: z.string().min(5, "Account number is required"),
-  acknowledgeRisk: z.boolean().refine((val) => val, "Required")
-});
-
-type FormValues = z.infer<typeof schema>;
+type FormValues = {
+  token: "ETH" | "USDC";
+  collateralAmount: string;
+  requestedIdr: string;
+  recipientName: string;
+  bankName: string;
+  accountNumber: string;
+  acknowledgeRisk: boolean;
+};
 
 const BANKS = [
   "BCA",
@@ -59,16 +58,31 @@ export default function BorrowForm({
   lockToken,
   allowedTokens
 }: BorrowFormProps) {
+  const { t, lang } = useI18n();
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const router = useRouter();
   const publicClient = usePublicClient();
   const { signMessageAsync } = useSignMessage();
   const { writeContractAsync } = useWriteContract();
-  const { ethUsd, usdIdrRate, isFxStale } = usePrices();
+  const { isFxStale } = usePrices();
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const schema = useMemo(
+    () =>
+      z.object({
+        token: z.enum(["ETH", "USDC"]),
+        collateralAmount: z.string().min(1, t("validation_collateral_required")),
+        requestedIdr: z.string().min(1, t("validation_loan_required")),
+        recipientName: z.string().min(2, t("validation_recipient_required")),
+        bankName: z.string().min(2, t("validation_bank_required")),
+        accountNumber: z.string().min(5, t("validation_account_required")),
+        acknowledgeRisk: z.boolean().refine((val) => val, t("validation_required"))
+      }),
+    [lang, t]
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -173,45 +187,45 @@ export default function BorrowForm({
     setError(null);
 
     if (!isConnected || !address) {
-      setError("Please connect your wallet.");
+      setError(t("error_connect_wallet"));
       return;
     }
 
     if (chainId !== TARGET_CHAIN_ID) {
-      setError("Wrong network. Please switch to Base.");
+      setError(t("error_wrong_network"));
       return;
     }
 
     if (!publicClient) {
-      setError("Public client is not ready.");
+      setError(t("error_public_client"));
       return;
     }
 
     if (isFxStale.data === true) {
-      setError("FX rate is stale. Please try again later.");
+      setError(t("error_fx_stale"));
       return;
     }
 
     if (requestedIdrBn === 0n || collateralAmountBn === 0n) {
-      setError("Collateral and loan amounts are required.");
+      setError(t("error_amounts_required"));
       return;
     }
 
     if (maxBorrowIdr.data && requestedIdrBn > maxBorrowIdr.data) {
-      setError("Loan amount exceeds max borrow (LTV 70%).");
+      setError(t("error_exceeds_max"));
       return;
     }
 
     if (values.token === "ETH" && ethBalance.data?.value) {
       if (collateralAmountBn > ethBalance.data.value) {
-        setError("Insufficient ETH balance.");
+        setError(t("error_insufficient_eth"));
         return;
       }
     }
 
     if (values.token === "USDC" && usdcBalance.data?.value) {
       if (collateralAmountBn > usdcBalance.data.value) {
-        setError("Insufficient USDC balance.");
+        setError(t("error_insufficient_usdc"));
         return;
       }
     }
@@ -255,7 +269,7 @@ export default function BorrowForm({
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.error ?? "Failed to save bank details");
+        throw new Error(data.error ?? t("error_save_bank"));
       }
 
       if (values.token === "ETH") {
@@ -305,7 +319,7 @@ export default function BorrowForm({
         router.push(`/positions/${positionId?.toString() ?? ""}`);
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Something went wrong";
+      const message = err instanceof Error ? err.message : t("error_generic");
       setError(message);
     } finally {
       setLoading(false);
@@ -315,12 +329,12 @@ export default function BorrowForm({
   return (
     <form onSubmit={onSubmit} className="glass-card p-8 space-y-6">
       <div className="space-y-2">
-        <h2 className="font-display text-2xl">Apply for a Loan</h2>
+        <h2 className="font-display text-2xl">{t("apply_title")}</h2>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <label className="space-y-2">
-          <span className="text-sm text-slate-600">Collateral</span>
+          <span className="text-sm text-slate-600">{t("label_collateral")}</span>
           <select
             className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 disabled:bg-slate-100 disabled:text-slate-400"
             {...form.register("token")}
@@ -335,14 +349,14 @@ export default function BorrowForm({
         </label>
 
         <label className="space-y-2">
-          <span className="text-sm text-slate-600">Collateral Amount</span>
+          <span className="text-sm text-slate-600">{t("label_collateral_amount")}</span>
           <input
             className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
             placeholder={token === "ETH" ? "0.5" : "1000"}
             {...form.register("collateralAmount")}
           />
           <span className="text-xs text-slate-500">
-            Balance:{" "}
+            {t("label_balance")}:{" "}
             {token === "ETH"
               ? ethBalance.data?.formatted ?? "-"
               : usdcBalance.data?.formatted ?? "-"}{" "}
@@ -351,7 +365,7 @@ export default function BorrowForm({
         </label>
 
         <label className="space-y-2 md:col-span-2">
-          <span className="text-sm text-slate-600">Loan Amount (IDR)</span>
+          <span className="text-sm text-slate-600">{t("label_loan_amount")}</span>
           <div className="relative">
             <input
               className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 pr-16"
@@ -366,21 +380,21 @@ export default function BorrowForm({
                 form.setValue("requestedIdr", formatIdr(max), { shouldDirty: true });
               }}
             >
-              Max
+              {t("button_max")}
             </button>
           </div>
           <span className="text-xs text-slate-500">
-            Max borrow: {formatIdr(maxBorrowIdr.data ?? 0n)} IDR
+            {t("label_max_borrow")}: {formatIdr(maxBorrowIdr.data ?? 0n)} IDR
           </span>
         </label>
       </div>
 
       <div className="glass-card p-5 space-y-4">
         <div className="flex items-center justify-between">
-          <div className="text-sm text-slate-600">LTV</div>
+          <div className="text-sm text-slate-600">{t("label_ltv")}</div>
           <div className="flex items-center gap-2">
             <div className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-              APR 5% fixed
+              {t("apr_badge")}
             </div>
             <div
               className={`rounded-full px-3 py-1 text-xs ${
@@ -415,32 +429,32 @@ export default function BorrowForm({
 
         <div className="grid gap-3 md:grid-cols-3 text-sm">
           <div>
-            <div className="text-xs text-slate-500">Collateral Value</div>
+            <div className="text-xs text-slate-500">{t("label_collateral_value")}</div>
             <div className="font-semibold">{formatIdr(collateralValue)} IDR</div>
           </div>
           <div>
-            <div className="text-xs text-slate-500">Loan</div>
+            <div className="text-xs text-slate-500">{t("label_loan")}</div>
             <div className="font-semibold">{formatIdr(requestedIdrBn)} IDR</div>
           </div>
           <div>
-            <div className="text-xs text-slate-500">Estimated Debt (1Y)</div>
+            <div className="text-xs text-slate-500">{t("label_estimated_debt")}</div>
             <div className="font-semibold">{formatIdr(debtEstimated)} IDR</div>
           </div>
         </div>
       </div>
 
       <div className="space-y-4">
-        <h3 className="font-display text-lg">Bank Details</h3>
+        <h3 className="font-display text-lg">{t("section_bank_details")}</h3>
         <div className="grid gap-4 md:grid-cols-2">
           <label className="space-y-2">
-            <span className="text-sm text-slate-600">Recipient Name</span>
+            <span className="text-sm text-slate-600">{t("label_recipient_name")}</span>
             <input
               className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
               {...form.register("recipientName")}
             />
           </label>
           <label className="space-y-2">
-            <span className="text-sm text-slate-600">Bank</span>
+            <span className="text-sm text-slate-600">{t("label_bank")}</span>
             <select
               className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
               {...form.register("bankName")}
@@ -453,7 +467,7 @@ export default function BorrowForm({
             </select>
           </label>
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm text-slate-600">Account Number</span>
+            <span className="text-sm text-slate-600">{t("label_account_number")}</span>
             <input
               className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
               {...form.register("accountNumber")}
@@ -465,7 +479,7 @@ export default function BorrowForm({
       <div className="space-y-3">
         <label className="flex items-start gap-3 text-sm text-slate-600">
           <input type="checkbox" className="mt-1" {...form.register("acknowledgeRisk")} />
-          I understand the liquidation risk if LTV reaches 95%.
+          {t("acknowledge_liquidation")}
         </label>
       </div>
 
@@ -476,7 +490,7 @@ export default function BorrowForm({
         disabled={loading}
         className="w-full rounded-xl bg-emerald-400 text-slate-900 py-3 font-semibold"
       >
-        {loading ? "Processing..." : "Submit Loan Request"}
+        {loading ? t("button_processing") : t("button_submit")}
       </button>
     </form>
   );
