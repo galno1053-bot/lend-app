@@ -99,11 +99,11 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
   };
 
   if (!data) {
-    return <div className="text-sm text-white/60">Memuat posisi...</div>;
+    return <div className="text-sm text-slate-500">Memuat posisi...</div>;
   }
 
   if (address && data?.[1]?.toLowerCase() !== address.toLowerCase()) {
-    return <div className="text-sm text-rose-200">Posisi ini bukan milik wallet kamu.</div>;
+    return <div className="text-sm text-rose-600">Posisi ini bukan milik wallet kamu.</div>;
   }
 
   return (
@@ -112,36 +112,36 @@ export default function PositionDetail({ positionId }: { positionId: bigint }) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">Principal</div>
+          <div className="text-xs text-slate-500">Principal</div>
           <div className="text-lg font-semibold">{formatIdr(data[4] as bigint)} IDR</div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">Debt Now</div>
+          <div className="text-xs text-slate-500">Debt Now</div>
           <div className="text-lg font-semibold">{formatIdr(debt.data ?? 0n)} IDR</div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">Collateral</div>
+          <div className="text-xs text-slate-500">Collateral</div>
           <div className="text-lg font-semibold">
             {formattedCollateral} {tokenLabel}
           </div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">Collateral Value</div>
+          <div className="text-xs text-slate-500">Collateral Value</div>
           <div className="text-lg font-semibold">{formatIdr(collateralValue.data ?? 0n)} IDR</div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">LTV Now</div>
+          <div className="text-xs text-slate-500">LTV Now</div>
           <div className="text-lg font-semibold">
             {ltv.data ? `${(Number(ltv.data) / 100).toFixed(2)}%` : "-"}
           </div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">Status</div>
+          <div className="text-xs text-slate-500">Status</div>
           <div className="text-lg font-semibold">{statusToLabel(status)}</div>
         </div>
       </div>
 
-      {error && <div className="text-sm text-rose-300">{error}</div>}
+      {error && <div className="text-sm text-rose-600">{error}</div>}
 
       <div className="flex flex-wrap gap-3">
         {status === 1 && (

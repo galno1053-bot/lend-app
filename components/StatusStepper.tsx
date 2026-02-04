@@ -9,7 +9,7 @@ export default function StatusStepper({ status }: { status: number }) {
 
   if (label === "LIQUIDATED") {
     return (
-      <div className="rounded-xl border border-rose-400/40 bg-rose-500/10 p-4 text-sm text-rose-100">
+      <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
         Posisi telah dilikuidasi.
       </div>
     );
@@ -23,7 +23,7 @@ export default function StatusStepper({ status }: { status: number }) {
           <div
             key={step}
             className={`rounded-full px-4 py-1 text-xs ${
-              isActive ? "bg-emerald-400 text-slate-900" : "bg-white/10 text-white/60"
+              isActive ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-500"
             }`}
           >
             {step.replace("_", " ")}

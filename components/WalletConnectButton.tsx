@@ -14,7 +14,7 @@ export default function WalletConnectButton() {
   if (!isConnected) {
     return (
       <button
-        className="rounded-full bg-emerald-400 text-slate-900 px-5 py-2 text-sm font-semibold"
+        className="rounded-full bg-emerald-500 text-white px-5 py-2 text-sm font-semibold"
         onClick={() => connect({ connector: injected() })}
         disabled={isPending}
       >
@@ -27,7 +27,7 @@ export default function WalletConnectButton() {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="text-xs text-white/70">
+      <div className="text-xs text-slate-500">
         {address?.slice(0, 6)}...{address?.slice(-4)}
       </div>
       {wrongChain ? (
@@ -39,7 +39,7 @@ export default function WalletConnectButton() {
         </button>
       ) : (
         <button
-          className="rounded-full border border-white/20 px-4 py-2 text-xs text-white/80"
+          className="rounded-full border border-slate-200 px-4 py-2 text-xs text-slate-600 hover:bg-slate-100"
           onClick={() => disconnect()}
         >
           Disconnect

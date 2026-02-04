@@ -13,7 +13,7 @@ type PositionItem = {
 
 export default function PositionsList({ items }: { items: PositionItem[] }) {
   if (!items.length) {
-    return <div className="text-sm text-white/60">Belum ada posisi.</div>;
+    return <div className="text-sm text-slate-500">Belum ada posisi.</div>;
   }
 
   return (
@@ -25,11 +25,11 @@ export default function PositionsList({ items }: { items: PositionItem[] }) {
           className="glass-card p-4 flex items-center justify-between hover:border-emerald-400/40 transition"
         >
           <div>
-            <div className="text-sm text-white/60">Position #{item.id.toString()}</div>
+            <div className="text-sm text-slate-500">Position #{item.id.toString()}</div>
             <div className="font-semibold text-lg">{formatIdr(item.principalIdr)} IDR</div>
           </div>
           <div className="text-right">
-            <div className="text-xs text-white/60">{item.tokenLabel}</div>
+            <div className="text-xs text-slate-500">{item.tokenLabel}</div>
             <div className="text-sm">{statusToLabel(item.status)}</div>
           </div>
         </Link>

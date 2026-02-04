@@ -256,16 +256,16 @@ export default function BorrowForm() {
     <form onSubmit={onSubmit} className="glass-card p-8 space-y-6">
       <div className="space-y-2">
         <h2 className="font-display text-2xl">Ajukan Pinjaman</h2>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-slate-600">
           Collateral ke IDR manual. LTV max 70%, liquidasi jika LTV &gt;= 95%.
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <label className="space-y-2">
-          <span className="text-sm text-white/70">Collateral</span>
+          <span className="text-sm text-slate-600">Collateral</span>
           <select
-            className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2"
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
             {...form.register("token")}
           >
             <option value="ETH">ETH</option>
@@ -274,13 +274,13 @@ export default function BorrowForm() {
         </label>
 
         <label className="space-y-2">
-          <span className="text-sm text-white/70">Jumlah Collateral</span>
+          <span className="text-sm text-slate-600">Jumlah Collateral</span>
           <input
-            className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2"
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
             placeholder={token === "ETH" ? "0.5" : "1000"}
             {...form.register("collateralAmount")}
           />
-          <span className="text-xs text-white/50">
+          <span className="text-xs text-slate-500">
             Balance:{" "}
             {token === "ETH"
               ? ethBalance.data?.formatted ?? "-"
@@ -290,13 +290,13 @@ export default function BorrowForm() {
         </label>
 
         <label className="space-y-2 md:col-span-2">
-          <span className="text-sm text-white/70">Jumlah Pinjaman (IDR)</span>
+          <span className="text-sm text-slate-600">Jumlah Pinjaman (IDR)</span>
           <input
-            className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2"
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
             placeholder="10.000.000"
             {...form.register("requestedIdr")}
           />
-          <span className="text-xs text-white/50">
+          <span className="text-xs text-slate-500">
             Max borrow: {formatIdr(maxBorrowIdr.data ?? 0n)} IDR
           </span>
         </label>
@@ -304,19 +304,19 @@ export default function BorrowForm() {
 
       <div className="grid gap-4 md:grid-cols-3">
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">ETH/USD</div>
+          <div className="text-xs text-slate-500">ETH/USD</div>
           <div className="text-lg font-semibold">
             {ethUsd.data ? Number(ethUsd.data) / 1e8 : "-"}
           </div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">USD/IDR</div>
+          <div className="text-xs text-slate-500">USD/IDR</div>
           <div className="text-lg font-semibold">
             {usdIdrRate.data ? Number(usdIdrRate.data) / 1e8 : "-"}
           </div>
         </div>
         <div className="glass-card p-4">
-          <div className="text-xs text-white/60">Nilai Collateral</div>
+          <div className="text-xs text-slate-500">Nilai Collateral</div>
           <div className="text-lg font-semibold">
             {formatIdr(collateralValueIdr.data ?? 0n)} IDR
           </div>
@@ -327,16 +327,16 @@ export default function BorrowForm() {
         <h3 className="font-display text-lg">Detail Rekening</h3>
         <div className="grid gap-4 md:grid-cols-2">
           <label className="space-y-2">
-            <span className="text-sm text-white/70">Nama Penerima</span>
+            <span className="text-sm text-slate-600">Nama Penerima</span>
             <input
-              className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2"
+              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
               {...form.register("recipientName")}
             />
           </label>
           <label className="space-y-2">
-            <span className="text-sm text-white/70">Bank</span>
+            <span className="text-sm text-slate-600">Bank</span>
             <select
-              className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2"
+              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
               {...form.register("bankName")}
             >
               {BANKS.map((bank) => (
@@ -347,9 +347,9 @@ export default function BorrowForm() {
             </select>
           </label>
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm text-white/70">Nomor Rekening</span>
+            <span className="text-sm text-slate-600">Nomor Rekening</span>
             <input
-              className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2"
+              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
               {...form.register("accountNumber")}
             />
           </label>
@@ -357,17 +357,17 @@ export default function BorrowForm() {
       </div>
 
       <div className="space-y-3">
-        <label className="flex items-start gap-3 text-sm text-white/70">
+        <label className="flex items-start gap-3 text-sm text-slate-600">
           <input type="checkbox" className="mt-1" {...form.register("acknowledgePayout")} />
           Saya paham pencairan IDR dilakukan manual oleh admin.
         </label>
-        <label className="flex items-start gap-3 text-sm text-white/70">
+        <label className="flex items-start gap-3 text-sm text-slate-600">
           <input type="checkbox" className="mt-1" {...form.register("acknowledgeRisk")} />
           Saya paham risiko liquidasi jika LTV mencapai 95%.
         </label>
       </div>
 
-      {error && <div className="text-sm text-rose-300">{error}</div>}
+      {error && <div className="text-sm text-rose-600">{error}</div>}
 
       <button
         type="submit"
