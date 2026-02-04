@@ -369,9 +369,6 @@ export default function BorrowForm({
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm text-slate-600">LTV</div>
-            <div className="text-xs text-slate-500">
-              LTV dihitung dari jaminan vs pinjaman + estimasi bunga tahunan.
-            </div>
           </div>
           <div
             className={`rounded-full px-3 py-1 text-xs ${
