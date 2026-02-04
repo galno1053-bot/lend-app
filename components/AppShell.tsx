@@ -19,7 +19,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="flex min-h-screen">
-        <aside className="hidden md:flex w-64 flex-col border-r border-slate-200 bg-white px-6 py-6">
+        <aside className="hidden md:flex w-64 flex-col border-r border-slate-200 bg-white px-6 py-6 sticky top-0 h-screen">
           <div className="flex items-center gap-2 text-xl font-display">
             <div className="h-8 w-8 rounded-full bg-emerald-500 text-white grid place-items-center text-sm">
               P
