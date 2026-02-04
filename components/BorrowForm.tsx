@@ -76,7 +76,10 @@ export default function BorrowForm({
       z.object({
         token: z.enum(["ETH", "USDC"]),
         collateralAmount: z.string().min(1, t("validation_collateral_required")),
-        requestedIdr: z.string().min(1, t("validation_loan_required")),
+        requestedIdr: z
+          .string()
+          .min(1, t("validation_loan_required"))
+          .refine((value) => parseIdrToBigInt(value) >= 100000n, t("validation_min_loan")),
         recipientName: z
           .string()
           .min(2, t("validation_recipient_required"))
