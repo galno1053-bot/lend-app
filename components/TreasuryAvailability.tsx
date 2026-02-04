@@ -12,7 +12,10 @@ export default function TreasuryAvailability() {
   return (
     <div className="glass-card p-5 space-y-3">
       <div className="flex items-center justify-between">
-        <div className="text-sm font-semibold text-slate-800">{t("availability_title")}</div>
+        <div className="space-y-1">
+          <div className="text-xs text-slate-500">{t("availability_amount")}</div>
+          <div className="text-xl font-semibold">{formatIdr(available)} IDR</div>
+        </div>
         <div
           className={`rounded-full px-3 py-1 text-xs font-semibold ${
             isAvailable
@@ -24,10 +27,6 @@ export default function TreasuryAvailability() {
         </div>
       </div>
       <div className="text-xs text-slate-500">{t("availability_subtitle")}</div>
-      <div className="space-y-1">
-        <div className="text-xs text-slate-500">{t("availability_amount")}</div>
-        <div className="text-xl font-semibold">{formatIdr(available)} IDR</div>
-      </div>
     </div>
   );
 }
