@@ -58,9 +58,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   </div>
                   Pinjaman
                 </div>
-                <div className="hidden md:block text-sm text-slate-500">
-                  Hybrid Crypto Collateral → IDR
-                </div>
+                <div className="hidden md:block text-sm text-slate-500"></div>
               </div>
               <WalletConnectButton />
             </div>
