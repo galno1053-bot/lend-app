@@ -171,6 +171,10 @@ export default function BorrowForm({
     }
   }, [token, onTokenChange]);
 
+  useEffect(() => {
+    void form.trigger();
+  }, [lang, form]);
+
   const collateralAmountBn = useMemo(() => {
     try {
       if (!collateralAmount) return 0n;
