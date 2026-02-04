@@ -50,9 +50,10 @@ const BANKS = [
 type BorrowFormProps = {
   selectedToken?: "ETH" | "USDC";
   onTokenChange?: (token: "ETH" | "USDC") => void;
+  lockToken?: boolean;
 };
 
-export default function BorrowForm({ selectedToken, onTokenChange }: BorrowFormProps) {
+export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: BorrowFormProps) {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const router = useRouter();
@@ -282,8 +283,9 @@ export default function BorrowForm({ selectedToken, onTokenChange }: BorrowFormP
         <label className="space-y-2">
           <span className="text-sm text-slate-600">Collateral</span>
           <select
-            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 disabled:bg-slate-100 disabled:text-slate-400"
             {...form.register("token")}
+            disabled={lockToken}
           >
             <option value="ETH">ETH</option>
             <option value="USDC">USDC</option>

@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import BorrowForm from "../../components/BorrowForm";
+import { useRouter } from "next/navigation";
 import LoanPools from "../../components/LoanPools";
 
 export default function BorrowPage() {
-  const [selectedToken, setSelectedToken] = useState<"ETH" | "USDC" | null>(null);
+  const router = useRouter();
 
   return (
     <section className="max-w-5xl space-y-6">
@@ -14,15 +13,12 @@ export default function BorrowPage() {
         <p className="text-sm text-slate-500">Pilih pool collateral untuk ajukan pinjaman.</p>
       </div>
 
-      <LoanPools selected={selectedToken} onSelect={setSelectedToken} />
-
-      {selectedToken ? (
-        <BorrowForm selectedToken={selectedToken} onTokenChange={setSelectedToken} />
-      ) : (
-        <div className="glass-card p-6 text-sm text-slate-500">
-          Pilih salah satu pool di atas untuk menampilkan form pengajuan pinjaman.
-        </div>
-      )}
+      <LoanPools
+        onSelect={(token) => {
+          const path = token === "ETH" ? "/borrow/eth" : "/borrow/usdc";
+          router.push(path);
+        }}
+      />
     </section>
   );
 }

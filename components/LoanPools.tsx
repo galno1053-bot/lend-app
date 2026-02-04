@@ -27,11 +27,11 @@ const POOLS: Pool[] = [
 ];
 
 export default function LoanPools({
-  selected,
+  selected = null,
   onSelect
 }: {
-  selected: Token | null;
-  onSelect: (token: Token) => void;
+  selected?: Token | null;
+  onSelect?: (token: Token) => void;
 }) {
   return (
     <div className="grid gap-4">
@@ -41,7 +41,7 @@ export default function LoanPools({
           <button
             key={pool.token}
             type="button"
-            onClick={() => onSelect(pool.token)}
+            onClick={() => onSelect?.(pool.token)}
             className={clsx(
               "glass-card p-5 text-left transition border",
               active ? "border-emerald-400 bg-emerald-50" : "border-slate-200 hover:bg-slate-50"
@@ -58,7 +58,7 @@ export default function LoanPools({
                   active ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-600"
                 )}
               >
-                {active ? "Selected" : "Choose"}
+                {active ? "Selected" : "Open"}
               </div>
             </div>
             <p className="text-xs text-slate-500 mt-3">{pool.description}</p>
