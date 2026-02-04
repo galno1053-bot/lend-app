@@ -127,6 +127,15 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
     query: { enabled: collateralAmountBn > 0n }
   });
 
+  const APR_BPS_UI = 500n; // 5% APR for UI indicator
+  const interestAnnual = (requestedIdrBn * APR_BPS_UI) / 10000n;
+  const debtEstimated = requestedIdrBn + interestAnnual;
+  const collateralValue = collateralValueIdr.data ?? 0n;
+  const ltvBps =
+    collateralValue > 0n ? (debtEstimated * 10000n) / collateralValue : 0n;
+  const ltvPct = Number(ltvBps) / 100;
+  const ltvBarWidth = Math.min(100, Math.max(0, ltvPct));
+
   const onSubmit = form.handleSubmit(async (values) => {
     setError(null);
 
@@ -321,23 +330,48 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
         </label>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">ETH/USD</div>
-          <div className="text-lg font-semibold">
-            {ethUsd.data ? Number(ethUsd.data) / 1e8 : "-"}
+      <div className="glass-card p-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-sm text-slate-600">Indikator LTV (APR 5%)</div>
+            <div className="text-xs text-slate-500">
+              LTV dihitung dari jaminan vs pinjaman + estimasi bunga tahunan.
+            </div>
+          </div>
+          <div
+            className={`rounded-full px-3 py-1 text-xs ${
+              ltvPct >= 95
+                ? "bg-rose-100 text-rose-600"
+                : ltvPct >= 70
+                  ? "bg-amber-100 text-amber-700"
+                  : "bg-emerald-100 text-emerald-600"
+            }`}
+          >
+            {Number.isFinite(ltvPct) ? `${ltvPct.toFixed(2)}%` : "-"}
           </div>
         </div>
-        <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">USD/IDR</div>
-          <div className="text-lg font-semibold">
-            {usdIdrRate.data ? Number(usdIdrRate.data) / 1e8 : "-"}
-          </div>
+
+        <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
+          <div
+            className={`h-full ${
+              ltvPct >= 95 ? "bg-rose-500" : ltvPct >= 70 ? "bg-amber-500" : "bg-emerald-500"
+            }`}
+            style={{ width: `${ltvBarWidth}%` }}
+          />
         </div>
-        <div className="glass-card p-4">
-          <div className="text-xs text-slate-500">Nilai Collateral</div>
-          <div className="text-lg font-semibold">
-            {formatIdr(collateralValueIdr.data ?? 0n)} IDR
+
+        <div className="grid gap-3 md:grid-cols-3 text-sm">
+          <div>
+            <div className="text-xs text-slate-500">Nilai Collateral</div>
+            <div className="font-semibold">{formatIdr(collateralValue)} IDR</div>
+          </div>
+          <div>
+            <div className="text-xs text-slate-500">Pinjaman</div>
+            <div className="font-semibold">{formatIdr(requestedIdrBn)} IDR</div>
+          </div>
+          <div>
+            <div className="text-xs text-slate-500">Estimasi Debt (1Y)</div>
+            <div className="font-semibold">{formatIdr(debtEstimated)} IDR</div>
           </div>
         </div>
       </div>
