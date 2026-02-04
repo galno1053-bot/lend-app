@@ -9,6 +9,7 @@ type Pool = {
   title: string;
   subtitle: string;
   description: string;
+  aprBadge: string;
 };
 
 const POOLS: Pool[] = [
@@ -16,13 +17,15 @@ const POOLS: Pool[] = [
     token: "ETH",
     title: "ETH -> IDR",
     subtitle: "ETH collateral",
-    description: "LTV max 70% - Liquidation 95% - APR simple interest"
+    description: "LTV max 70% - Liquidation 95% - Simple interest",
+    aprBadge: "APR 5% fixed"
   },
   {
     token: "USDC",
     title: "USDC -> IDR",
     subtitle: "USDC collateral",
-    description: "LTV max 70% - Liquidation 95% - APR simple interest"
+    description: "LTV max 70% - Liquidation 95% - Simple interest",
+    aprBadge: "APR 5% fixed"
   }
 ];
 
@@ -52,13 +55,18 @@ export default function LoanPools({
                 <div className="text-lg font-semibold text-slate-900">{pool.title}</div>
                 <div className="text-xs text-slate-500 mt-1">{pool.subtitle}</div>
               </div>
-              <div
-                className={clsx(
-                  "rounded-full px-3 py-1 text-xs",
-                  active ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-600"
-                )}
-              >
-                {active ? "Selected" : "Open"}
+              <div className="flex flex-col items-end gap-2">
+                <div className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  {pool.aprBadge}
+                </div>
+                <div
+                  className={clsx(
+                    "rounded-full px-3 py-1 text-xs",
+                    active ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-600"
+                  )}
+                >
+                  {active ? "Selected" : "Open"}
+                </div>
               </div>
             </div>
             <p className="text-xs text-slate-500 mt-3">{pool.description}</p>
