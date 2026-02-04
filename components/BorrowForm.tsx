@@ -288,7 +288,7 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <label className="space-y-2">
           <span className="text-sm text-slate-600">Collateral</span>
           <select
@@ -296,8 +296,19 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
             {...form.register("token")}
             disabled={lockToken}
           >
-            <option value="ETH">ETH</option>
-            <option value="USDC">USDC</option>
+            <option value="ETH">ETH (Base)</option>
+            <option value="USDC">USDC (Base)</option>
+          </select>
+        </label>
+
+        <label className="space-y-2">
+          <span className="text-sm text-slate-600">Network</span>
+          <select
+            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 disabled:bg-slate-100 disabled:text-slate-400"
+            disabled
+            value="Base"
+          >
+            <option value="Base">Base</option>
           </select>
         </label>
 
@@ -317,7 +328,7 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
           </span>
         </label>
 
-        <label className="space-y-2 md:col-span-2">
+        <label className="space-y-2 md:col-span-3">
           <span className="text-sm text-slate-600">Jumlah Pinjaman (IDR)</span>
           <input
             className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
