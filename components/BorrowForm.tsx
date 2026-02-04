@@ -30,6 +30,7 @@ type FormValues = {
   bankName: string;
   accountNumber: string;
   acknowledgeRisk: boolean;
+  acknowledgeTerms: boolean;
 };
 
 const BANKS = [
@@ -79,8 +80,9 @@ export default function BorrowForm({
         recipientName: z.string().min(2, t("validation_recipient_required")),
         bankName: z.string().min(2, t("validation_bank_required")),
         accountNumber: z.string().min(5, t("validation_account_required")),
-        acknowledgeRisk: z.boolean().refine((val) => val, t("validation_required"))
-      }),
+      acknowledgeRisk: z.boolean().refine((val) => val, t("validation_required")),
+      acknowledgeTerms: z.boolean().refine((val) => val, t("validation_required"))
+    }),
     [lang, t]
   );
 
@@ -93,7 +95,8 @@ export default function BorrowForm({
       recipientName: "",
       bankName: BANKS[0],
       accountNumber: "",
-      acknowledgeRisk: false
+      acknowledgeRisk: false,
+      acknowledgeTerms: false
     }
   });
 
@@ -480,6 +483,10 @@ export default function BorrowForm({
         <label className="flex items-start gap-3 text-sm text-slate-600">
           <input type="checkbox" className="mt-1" {...form.register("acknowledgeRisk")} />
           {t("acknowledge_liquidation")}
+        </label>
+        <label className="flex items-start gap-3 text-sm text-slate-600">
+          <input type="checkbox" className="mt-1" {...form.register("acknowledgeTerms")} />
+          {t("acknowledge_terms")}
         </label>
       </div>
 
