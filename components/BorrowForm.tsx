@@ -318,9 +318,6 @@ export default function BorrowForm({
     <form onSubmit={onSubmit} className="glass-card p-8 space-y-6">
       <div className="space-y-2">
         <h2 className="font-display text-2xl">Ajukan Pinjaman</h2>
-        <p className="text-sm text-slate-600">
-          Collateral ke IDR manual. LTV max 70%, liquidasi jika LTV &gt;= 95%.
-        </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
