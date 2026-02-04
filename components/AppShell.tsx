@@ -50,44 +50,44 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             })}
           </nav>
           <div className="mt-auto flex items-center gap-3 text-slate-400">
-  <a
-    href={X_URL}
-    target="_blank"
-    rel="noreferrer"
-    className="h-8 w-8 rounded-full border border-slate-200 grid place-items-center hover:bg-slate-100"
-    aria-label="X / Twitter"
-  >
-    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M16.98 3H21l-8.75 9.99L22 21h-6.78l-5.3-6.23L4.32 21H0.3l9.34-10.67L2 3h6.94l4.8 5.64L16.98 3Zm-1.19 15.99h1.88L8.21 4.88H6.2l9.59 14.11Z"
-      />
-    </svg>
-  </a>
-  <a
-    href={TELEGRAM_URL}
-    target="_blank"
-    rel="noreferrer"
-    className="h-8 w-8 rounded-full border border-slate-200 grid place-items-center hover:bg-slate-100"
-    aria-label="Telegram"
-  >
-    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-      <path
-        fill="currentColor"
+            <a
+              href={X_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="text-slate-400 hover:text-slate-600 transition"
+              aria-label="X / Twitter"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M16.98 3H21l-8.75 9.99L22 21h-6.78l-5.3-6.23L4.32 21H0.3l9.34-10.67L2 3h6.94l4.8 5.64L16.98 3Zm-1.19 15.99h1.88L8.21 4.88H6.2l9.59 14.11Z"
+                />
+              </svg>
+            </a>
+            <a
+              href={TELEGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="text-slate-400 hover:text-slate-600 transition"
+              aria-label="Telegram"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+                <path
+                  fill="currentColor"
         d="M21.5 3.5L2.7 10.8c-.9.3-.9 1.6 0 1.9l4.6 1.6 2.1 6.2c.2.7 1.1.9 1.6.4l2.6-2.6 5.1 3.7c.6.4 1.4.1 1.6-.6l3.2-17.1c.2-.8-.6-1.5-1.4-1.1ZM8.6 14.1l9.9-7.1-7.4 8.7-.3 3.2-1.5-4.8-3.9-1.4 9.9-3.8-6.7 5.2Z"
       />
     </svg>
   </a>
-  <a
-    href={DOCS_URL}
-    target="_blank"
-    rel="noreferrer"
-    className="h-8 w-8 rounded-full border border-slate-200 grid place-items-center hover:bg-slate-100"
-    aria-label="Docs"
-  >
-    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-      <path
-        fill="currentColor"
+            <a
+              href={DOCS_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="text-slate-400 hover:text-slate-600 transition"
+              aria-label="Docs"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+                <path
+                  fill="currentColor"
         d="M6 2h8l4 4v16H6V2Zm8 1.5V7h3.5L14 3.5ZM8 10h8v1.5H8V10Zm0 4h8v1.5H8V14Zm0 4h5v1.5H8V18Z"
       />
     </svg>
