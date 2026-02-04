@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,7 +47,12 @@ const BANKS = [
   "BTN"
 ];
 
-export default function BorrowForm() {
+type BorrowFormProps = {
+  selectedToken?: "ETH" | "USDC";
+  onTokenChange?: (token: "ETH" | "USDC") => void;
+};
+
+export default function BorrowForm({ selectedToken, onTokenChange }: BorrowFormProps) {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const router = useRouter();
@@ -379,3 +384,14 @@ export default function BorrowForm() {
     </form>
   );
 }
+  useEffect(() => {
+    if (selectedToken && selectedToken !== token) {
+      form.setValue("token", selectedToken);
+    }
+  }, [selectedToken, token, form]);
+
+  useEffect(() => {
+    if (onTokenChange) {
+      onTokenChange(token);
+    }
+  }, [token, onTokenChange]);
