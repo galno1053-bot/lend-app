@@ -314,8 +314,11 @@ export default function BorrowForm({
 
   return (
     <form onSubmit={onSubmit} className="glass-card p-8 space-y-6">
-      <div className="space-y-2">
+      <div className="flex items-center justify-between">
         <h2 className="font-display text-2xl">Apply for a Loan</h2>
+        <div className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+          APR 5% fixed
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
