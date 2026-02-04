@@ -22,7 +22,7 @@ export default function BorrowTokenPage({ params }: { params: { token: string } 
           href="/borrow"
           className="rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600 hover:bg-slate-100"
         >
-          <- Back
+          &larr; Back
         </Link>
         <div className="text-xl font-display">Ajukan Pinjaman</div>
       </div>
