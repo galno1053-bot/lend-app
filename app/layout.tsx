@@ -17,8 +17,8 @@ const body = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Pinjaman Hybrid - App",
-  description: "Hybrid Crypto Collateral Loan to IDR"
+  title: "Naxa Finance - App",
+  description: "Naxa Finance hybrid crypto collateral loan to IDR"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -22,9 +22,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <aside className="hidden md:flex w-64 flex-col border-r border-slate-200 bg-white px-6 py-6 sticky top-0 h-screen">
           <div className="flex items-center gap-2 text-xl font-display">
             <div className="h-8 w-8 rounded-full bg-emerald-500 text-white grid place-items-center text-sm">
-              P
+              N
             </div>
-            Pinjaman
+            Naxa
           </div>
           <nav className="mt-10 space-y-2">
             {NAV_ITEMS.map((item) => {
@@ -46,9 +46,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               );
             })}
           </nav>
-          <div className="mt-auto text-xs text-slate-400">
-            Hybrid IDR Loans on Base
-          </div>
+          <div className="mt-auto text-xs text-slate-400">Naxa Finance • Base</div>
         </aside>
 
         <div className="flex-1 flex flex-col">
@@ -57,9 +55,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <div className="flex items-center gap-3">
                 <div className="md:hidden flex items-center gap-2 text-lg font-display">
                   <div className="h-8 w-8 rounded-full bg-emerald-500 text-white grid place-items-center text-sm">
-                    P
+                    N
                   </div>
-                  Pinjaman
+                  Naxa
                 </div>
                 <div className="hidden md:block text-sm text-slate-500"></div>
               </div>
