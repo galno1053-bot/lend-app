@@ -372,11 +372,13 @@ export default function BorrowForm({
           </div>
           <div
             className={`rounded-full px-3 py-1 text-xs ${
-              ltvPct >= 95
+              ltvPct >= 90
                 ? "bg-rose-100 text-rose-600"
-                : ltvPct >= 70
-                  ? "bg-amber-100 text-amber-700"
-                  : "bg-emerald-100 text-emerald-600"
+                : ltvPct >= 80
+                  ? "bg-orange-100 text-orange-700"
+                  : ltvPct >= 70
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-emerald-100 text-emerald-600"
             }`}
           >
             {Number.isFinite(ltvPct) ? `${ltvPct.toFixed(2)}%` : "-"}
@@ -386,7 +388,13 @@ export default function BorrowForm({
         <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
           <div
             className={`h-full ${
-              ltvPct >= 95 ? "bg-rose-500" : ltvPct >= 70 ? "bg-amber-500" : "bg-emerald-500"
+              ltvPct >= 90
+                ? "bg-rose-500"
+                : ltvPct >= 80
+                  ? "bg-orange-500"
+                  : ltvPct >= 70
+                    ? "bg-yellow-500"
+                    : "bg-emerald-500"
             }`}
             style={{ width: `${ltvBarWidth}%` }}
           />
