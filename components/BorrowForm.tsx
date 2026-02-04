@@ -352,11 +352,23 @@ export default function BorrowForm({
 
         <label className="space-y-2 md:col-span-2">
           <span className="text-sm text-slate-600">Jumlah Pinjaman (IDR)</span>
-          <input
-            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
-            placeholder="10.000.000"
-            {...form.register("requestedIdr")}
-          />
+          <div className="relative">
+            <input
+              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 pr-16"
+              placeholder="10.000.000"
+              {...form.register("requestedIdr")}
+            />
+            <button
+              type="button"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-200"
+              onClick={() => {
+                const max = maxBorrowIdr.data ?? 0n;
+                form.setValue("requestedIdr", formatIdr(max), { shouldDirty: true });
+              }}
+            >
+              Max
+            </button>
+          </div>
           <span className="text-xs text-slate-500">
             Max borrow: {formatIdr(maxBorrowIdr.data ?? 0n)} IDR
           </span>
