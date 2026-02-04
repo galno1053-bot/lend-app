@@ -368,7 +368,7 @@ export default function BorrowForm({
       <div className="glass-card p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-sm text-slate-600">Indikator LTV (APR 5%)</div>
+            <div className="text-sm text-slate-600">LTV</div>
             <div className="text-xs text-slate-500">
               LTV dihitung dari jaminan vs pinjaman + estimasi bunga tahunan.
             </div>
