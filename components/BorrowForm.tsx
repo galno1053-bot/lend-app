@@ -421,9 +421,11 @@ export default function BorrowForm({
           {showError("requestedIdr") && (
             <span className="text-xs text-rose-600">{errors.requestedIdr?.message}</span>
           )}
-          <span className="text-xs text-slate-500">
-            {t("label_max_borrow")}: {formatIdr(maxBorrowIdr.data ?? 0n)} IDR
-          </span>
+          {maxBorrowIdr.data && maxBorrowIdr.data > 0n && (
+            <span className="text-xs text-slate-500">
+              {t("label_max_borrow")}: {formatIdr(maxBorrowIdr.data ?? 0n)} IDR
+            </span>
+          )}
         </label>
       </div>
 
