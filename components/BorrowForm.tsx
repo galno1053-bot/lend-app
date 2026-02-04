@@ -51,9 +51,15 @@ type BorrowFormProps = {
   selectedToken?: "ETH" | "USDC";
   onTokenChange?: (token: "ETH" | "USDC") => void;
   lockToken?: boolean;
+  allowedTokens?: Array<"ETH" | "USDC">;
 };
 
-export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: BorrowFormProps) {
+export default function BorrowForm({
+  selectedToken,
+  onTokenChange,
+  lockToken,
+  allowedTokens
+}: BorrowFormProps) {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const router = useRouter();
@@ -79,6 +85,11 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
     }
   });
 
+  const tokenOptions = useMemo(() => {
+    if (allowedTokens && allowedTokens.length > 0) return allowedTokens;
+    return ["ETH", "USDC"] as Array<"ETH" | "USDC">;
+  }, [allowedTokens]);
+
   const token = form.watch("token");
   const collateralAmount = form.watch("collateralAmount");
   const requestedIdr = form.watch("requestedIdr");
@@ -86,20 +97,32 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
   const didInitToken = useRef(false);
 
   useEffect(() => {
-    if (!selectedToken) return;
+    const preferredToken =
+      selectedToken && tokenOptions.includes(selectedToken) ? selectedToken : tokenOptions[0];
+
+    if (!preferredToken) return;
 
     if (lockToken) {
-      if (selectedToken !== token) {
-        form.setValue("token", selectedToken);
+      if (preferredToken !== token) {
+        form.setValue("token", preferredToken);
       }
       return;
     }
 
     if (!didInitToken.current) {
-      form.setValue("token", selectedToken);
+      if (preferredToken !== token) {
+        form.setValue("token", preferredToken);
+      }
       didInitToken.current = true;
     }
-  }, [selectedToken, token, lockToken, form]);
+  }, [selectedToken, tokenOptions, token, lockToken, form]);
+
+  useEffect(() => {
+    if (tokenOptions.length === 0) return;
+    if (!tokenOptions.includes(token)) {
+      form.setValue("token", tokenOptions[0]);
+    }
+  }, [tokenOptions, token, form]);
 
   useEffect(() => {
     if (onTokenChange) {
@@ -308,8 +331,11 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
             {...form.register("token")}
             disabled={lockToken}
           >
-            <option value="ETH">ETH (Base)</option>
-            <option value="USDC">USDC (Base)</option>
+            {tokenOptions.map((option) => (
+              <option key={option} value={option}>
+                {option} (Base)
+              </option>
+            ))}
           </select>
         </label>
 
