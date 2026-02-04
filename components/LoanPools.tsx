@@ -15,14 +15,14 @@ type Pool = {
 const POOLS: Pool[] = [
   {
     token: "ETH",
-    title: "ETH -> IDR",
+    title: "ETH \u2192 IDR",
     subtitle: "ETH collateral",
     description: "LTV max 70% - Liquidation 95% - Simple interest",
     aprBadge: "APR 5% fixed"
   },
   {
     token: "USDC",
-    title: "USDC -> IDR",
+    title: "USDC \u2192 IDR",
     subtitle: "USDC collateral",
     description: "LTV max 70% - Liquidation 95% - Simple interest",
     aprBadge: "APR 5% fixed"
@@ -61,11 +61,22 @@ export default function LoanPools({
                 </div>
                 <div
                   className={clsx(
-                    "rounded-full px-3 py-1 text-xs",
-                    active ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-600"
+                    "h-8 w-8 rounded-full border grid place-items-center",
+                    active
+                      ? "bg-emerald-500 text-white border-emerald-500"
+                      : "bg-white text-slate-500 border-slate-200"
                   )}
+                  aria-hidden="true"
                 >
-                  {active ? "Selected" : "Open"}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M5 12h14M13 6l6 6-6 6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </div>
               </div>
             </div>
