@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import { useState } from "react";
 import WalletConnectButton from "./WalletConnectButton";
 
 const NAV_ITEMS = [
@@ -13,6 +14,7 @@ const NAV_ITEMS = [
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -50,7 +52,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </aside>
 
         <div className="flex-1 flex flex-col">
-          <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
+          <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur relative">
             <div className="flex items-center justify-between px-6 py-4">
               <div className="flex items-center gap-3">
                 <div className="md:hidden flex items-center gap-2 text-lg font-display">
@@ -61,26 +63,50 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className="hidden md:block text-sm text-slate-500"></div>
               </div>
-              <WalletConnectButton />
+              <div className="hidden md:block">
+                <WalletConnectButton />
+              </div>
+              <button
+                className="md:hidden rounded-full border border-slate-200 px-3 py-2 text-slate-600 hover:bg-slate-100"
+                onClick={() => setMobileOpen((open) => !open)}
+                aria-label="Toggle menu"
+              >
+                <div className="flex flex-col gap-1">
+                  <span className="h-0.5 w-5 bg-slate-600" />
+                  <span className="h-0.5 w-5 bg-slate-600" />
+                </div>
+              </button>
             </div>
-            <div className="md:hidden flex gap-2 px-6 pb-4">
-              {NAV_ITEMS.map((item) => {
-                const active = pathname.startsWith(item.href);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={clsx(
-                      "rounded-full px-4 py-2 text-xs transition",
-                      active
-                        ? "bg-emerald-500 text-white"
-                        : "bg-slate-100 text-slate-600"
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
+            <div
+              className={clsx(
+                "md:hidden absolute left-0 right-0 top-full bg-white border-b border-slate-200 shadow-sm transition-all duration-300 overflow-hidden",
+                mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              )}
+            >
+              <div className="px-6 py-4 space-y-3">
+                {NAV_ITEMS.map((item) => {
+                  const active = pathname.startsWith(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={clsx(
+                        "flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition",
+                        active
+                          ? "bg-emerald-50 text-emerald-700 font-semibold"
+                          : "text-slate-600 hover:bg-slate-100"
+                      )}
+                    >
+                      <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+                <div className="pt-3 border-t border-slate-200 flex justify-end">
+                  <WalletConnectButton />
+                </div>
+              </div>
             </div>
           </header>
 
