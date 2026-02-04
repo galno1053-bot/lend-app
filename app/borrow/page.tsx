@@ -5,7 +5,7 @@ import BorrowForm from "../../components/BorrowForm";
 import LoanPools from "../../components/LoanPools";
 
 export default function BorrowPage() {
-  const [selectedToken, setSelectedToken] = useState<"ETH" | "USDC">("ETH");
+  const [selectedToken, setSelectedToken] = useState<"ETH" | "USDC" | null>(null);
 
   return (
     <section className="max-w-5xl space-y-6">
@@ -16,7 +16,13 @@ export default function BorrowPage() {
 
       <LoanPools selected={selectedToken} onSelect={setSelectedToken} />
 
-      <BorrowForm selectedToken={selectedToken} onTokenChange={setSelectedToken} />
+      {selectedToken ? (
+        <BorrowForm selectedToken={selectedToken} onTokenChange={setSelectedToken} />
+      ) : (
+        <div className="glass-card p-6 text-sm text-slate-500">
+          Pilih salah satu pool di atas untuk menampilkan form pengajuan pinjaman.
+        </div>
+      )}
     </section>
   );
 }

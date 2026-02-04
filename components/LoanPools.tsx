@@ -30,7 +30,7 @@ export default function LoanPools({
   selected,
   onSelect
 }: {
-  selected: Token;
+  selected: Token | null;
   onSelect: (token: Token) => void;
 }) {
   return (
