@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import {
   useAccount,
   useBalance,
@@ -120,6 +121,19 @@ export default function BorrowForm({
   const collateralAmount = form.watch("collateralAmount");
   const requestedIdr = form.watch("requestedIdr");
   const canSubmit = form.formState.isValid && !loading;
+  const { errors, touchedFields, isSubmitted } = form.formState;
+
+  const showError = (field: keyof FormValues) =>
+    Boolean(errors[field] && (touchedFields[field] || isSubmitted));
+
+  const fieldClass = (field: keyof FormValues, extra?: string) =>
+    clsx(
+      "w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2",
+      showError(field)
+        ? "border-rose-300 bg-rose-50 focus:ring-rose-100"
+        : "border-slate-200 bg-slate-50 focus:ring-emerald-100",
+      extra
+    );
 
   const didInitToken = useRef(false);
 
@@ -351,7 +365,10 @@ export default function BorrowForm({
         <label className="space-y-2">
           <span className="text-sm text-slate-600">{t("label_collateral")}</span>
           <select
-            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 disabled:bg-slate-100 disabled:text-slate-400"
+            className={clsx(
+              "w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-100 disabled:bg-slate-100 disabled:text-slate-400",
+              "border-slate-200 bg-slate-50"
+            )}
             {...form.register("token")}
             disabled={lockToken}
           >
@@ -366,10 +383,13 @@ export default function BorrowForm({
         <label className="space-y-2">
           <span className="text-sm text-slate-600">{t("label_collateral_amount")}</span>
           <input
-            className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
+            className={fieldClass("collateralAmount")}
             placeholder={token === "ETH" ? "0.5" : "1000"}
             {...form.register("collateralAmount")}
           />
+          {showError("collateralAmount") && (
+            <span className="text-xs text-rose-600">{errors.collateralAmount?.message}</span>
+          )}
           <span className="text-xs text-slate-500">
             {t("label_balance")}:{" "}
             {token === "ETH"
@@ -383,7 +403,7 @@ export default function BorrowForm({
           <span className="text-sm text-slate-600">{t("label_loan_amount")}</span>
           <div className="relative">
             <input
-              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2 pr-16"
+              className={fieldClass("requestedIdr", "pr-16")}
               placeholder="10.000.000"
               {...form.register("requestedIdr")}
             />
@@ -398,6 +418,9 @@ export default function BorrowForm({
               {t("button_max")}
             </button>
           </div>
+          {showError("requestedIdr") && (
+            <span className="text-xs text-rose-600">{errors.requestedIdr?.message}</span>
+          )}
           <span className="text-xs text-slate-500">
             {t("label_max_borrow")}: {formatIdr(maxBorrowIdr.data ?? 0n)} IDR
           </span>
@@ -464,14 +487,17 @@ export default function BorrowForm({
           <label className="space-y-2">
             <span className="text-sm text-slate-600">{t("label_recipient_name")}</span>
             <input
-              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
+              className={fieldClass("recipientName")}
               {...form.register("recipientName")}
             />
+            {showError("recipientName") && (
+              <span className="text-xs text-rose-600">{errors.recipientName?.message}</span>
+            )}
           </label>
           <label className="space-y-2">
             <span className="text-sm text-slate-600">{t("label_bank")}</span>
             <select
-              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
+              className={fieldClass("bankName")}
               {...form.register("bankName")}
             >
               {BANKS.map((bank) => (
@@ -480,13 +506,19 @@ export default function BorrowForm({
                 </option>
               ))}
             </select>
+            {showError("bankName") && (
+              <span className="text-xs text-rose-600">{errors.bankName?.message}</span>
+            )}
           </label>
           <label className="space-y-2 md:col-span-2">
             <span className="text-sm text-slate-600">{t("label_account_number")}</span>
             <input
-              className="w-full rounded-xl bg-slate-50 border border-slate-200 px-3 py-2"
+              className={fieldClass("accountNumber")}
               {...form.register("accountNumber")}
             />
+            {showError("accountNumber") && (
+              <span className="text-xs text-rose-600">{errors.accountNumber?.message}</span>
+            )}
           </label>
         </div>
       </div>
@@ -496,10 +528,16 @@ export default function BorrowForm({
           <input type="checkbox" className="mt-1" {...form.register("acknowledgeRisk")} />
           {t("acknowledge_liquidation")}
         </label>
+        {showError("acknowledgeRisk") && (
+          <div className="text-xs text-rose-600">{errors.acknowledgeRisk?.message}</div>
+        )}
         <label className="flex items-start gap-3 text-sm text-slate-600">
           <input type="checkbox" className="mt-1" {...form.register("acknowledgeTerms")} />
           {t("acknowledge_terms")}
         </label>
+        {showError("acknowledgeTerms") && (
+          <div className="text-xs text-rose-600">{errors.acknowledgeTerms?.message}</div>
+        )}
       </div>
 
       {error && <div className="text-sm text-rose-600">{error}</div>}
