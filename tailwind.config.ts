@@ -13,8 +13,7 @@ export default {
         mist: "#f5f7fa",
         ember: "#ff6b4a",
         jade: "#2dd4bf",
-        ocean: "#0ea5e9",
-        slate: "#1f2937"
+        ocean: "#0ea5e9"
       },
       backgroundImage: {
         "hero-gradient":
