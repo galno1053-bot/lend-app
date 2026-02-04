@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -83,11 +83,23 @@ export default function BorrowForm({ selectedToken, onTokenChange, lockToken }: 
   const collateralAmount = form.watch("collateralAmount");
   const requestedIdr = form.watch("requestedIdr");
 
+  const didInitToken = useRef(false);
+
   useEffect(() => {
-    if (selectedToken && selectedToken !== token) {
-      form.setValue("token", selectedToken);
+    if (!selectedToken) return;
+
+    if (lockToken) {
+      if (selectedToken !== token) {
+        form.setValue("token", selectedToken);
+      }
+      return;
     }
-  }, [selectedToken, token, form]);
+
+    if (!didInitToken.current) {
+      form.setValue("token", selectedToken);
+      didInitToken.current = true;
+    }
+  }, [selectedToken, token, lockToken, form]);
 
   useEffect(() => {
     if (onTokenChange) {

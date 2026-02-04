@@ -27,7 +27,7 @@ export default function BorrowTokenPage({ params }: { params: { token: string } 
         <div className="text-xl font-display">Ajukan Pinjaman</div>
       </div>
 
-      <BorrowForm selectedToken={token} lockToken />
+      <BorrowForm selectedToken={token} />
     </section>
   );
 }
