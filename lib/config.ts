@@ -9,5 +9,8 @@ export const USDC_ADDRESS = (process.env.NEXT_PUBLIC_USDC_ADDRESS ??
 export const USDC_DECIMALS = Number(process.env.NEXT_PUBLIC_USDC_DECIMALS ?? 6);
 
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+export const TREASURY_IDR_AVAILABLE = Number(
+  process.env.NEXT_PUBLIC_TREASURY_IDR_AVAILABLE ?? 0
+);
 
 export const CHAINS: [Chain, ...Chain[]] = [base, baseSepolia];

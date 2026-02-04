@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import BorrowForm from "../../../components/BorrowForm";
 import { useI18n } from "../../../components/LanguageProvider";
+import TreasuryAvailability from "../../../components/TreasuryAvailability";
 
 const TOKEN_MAP: Record<string, "ETH" | "USDC"> = {
   eth: "ETH",
@@ -30,7 +31,7 @@ export default function BorrowTokenPage() {
   }
 
   return (
-    <section className="max-w-5xl space-y-6">
+    <section className="max-w-6xl space-y-6">
       <div className="flex items-center gap-3">
         <Link
           href="/borrow"
@@ -40,7 +41,12 @@ export default function BorrowTokenPage() {
         </Link>
       </div>
 
-      <BorrowForm selectedToken={token} allowedTokens={[token]} />
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <BorrowForm selectedToken={token} allowedTokens={[token]} />
+        <div className="space-y-4 lg:sticky lg:top-24 self-start">
+          <TreasuryAvailability />
+        </div>
+      </div>
     </section>
   );
 }
