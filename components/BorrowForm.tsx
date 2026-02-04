@@ -77,17 +77,25 @@ export default function BorrowForm({
         token: z.enum(["ETH", "USDC"]),
         collateralAmount: z.string().min(1, t("validation_collateral_required")),
         requestedIdr: z.string().min(1, t("validation_loan_required")),
-        recipientName: z.string().min(2, t("validation_recipient_required")),
-        bankName: z.string().min(2, t("validation_bank_required")),
+        recipientName: z
+          .string()
+          .min(2, t("validation_recipient_required"))
+          .regex(/^[A-Za-z\s.'-]+$/, t("validation_letters_only")),
+        bankName: z
+          .string()
+          .min(2, t("validation_bank_required"))
+          .regex(/^[A-Za-z\s.'-]+$/, t("validation_letters_only")),
         accountNumber: z.string().min(5, t("validation_account_required")),
-      acknowledgeRisk: z.boolean().refine((val) => val, t("validation_required")),
-      acknowledgeTerms: z.boolean().refine((val) => val, t("validation_required"))
-    }),
+        acknowledgeRisk: z.boolean().refine((val) => val, t("validation_required")),
+        acknowledgeTerms: z.boolean().refine((val) => val, t("validation_required"))
+      }),
     [lang, t]
   );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
+    mode: "onChange",
+    reValidateMode: "onChange",
     defaultValues: {
       token: "ETH",
       collateralAmount: "",
@@ -108,6 +116,7 @@ export default function BorrowForm({
   const token = form.watch("token");
   const collateralAmount = form.watch("collateralAmount");
   const requestedIdr = form.watch("requestedIdr");
+  const canSubmit = form.formState.isValid && !loading;
 
   const didInitToken = useRef(false);
 
@@ -494,8 +503,8 @@ export default function BorrowForm({
 
       <button
         type="submit"
-        disabled={loading}
-        className="w-full rounded-xl bg-emerald-400 text-slate-900 py-3 font-semibold"
+        disabled={!canSubmit}
+        className="w-full rounded-xl bg-emerald-400 text-slate-900 py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? t("button_processing") : t("button_submit")}
       </button>
