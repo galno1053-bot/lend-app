@@ -82,6 +82,18 @@ export default function BorrowForm({ selectedToken, onTokenChange }: BorrowFormP
   const collateralAmount = form.watch("collateralAmount");
   const requestedIdr = form.watch("requestedIdr");
 
+  useEffect(() => {
+    if (selectedToken && selectedToken !== token) {
+      form.setValue("token", selectedToken);
+    }
+  }, [selectedToken, token, form]);
+
+  useEffect(() => {
+    if (onTokenChange) {
+      onTokenChange(token);
+    }
+  }, [token, onTokenChange]);
+
   const collateralAmountBn = useMemo(() => {
     try {
       if (!collateralAmount) return 0n;
@@ -384,14 +396,3 @@ export default function BorrowForm({ selectedToken, onTokenChange }: BorrowFormP
     </form>
   );
 }
-  useEffect(() => {
-    if (selectedToken && selectedToken !== token) {
-      form.setValue("token", selectedToken);
-    }
-  }, [selectedToken, token, form]);
-
-  useEffect(() => {
-    if (onTokenChange) {
-      onTokenChange(token);
-    }
-  }, [token, onTokenChange]);
