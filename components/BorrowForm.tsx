@@ -28,7 +28,6 @@ const schema = z.object({
   recipientName: z.string().min(2, "Nama penerima wajib diisi"),
   bankName: z.string().min(2, "Nama bank wajib diisi"),
   accountNumber: z.string().min(5, "Nomor rekening wajib diisi"),
-  acknowledgePayout: z.boolean().refine((val) => val, "Wajib disetujui"),
   acknowledgeRisk: z.boolean().refine((val) => val, "Wajib disetujui")
 });
 
@@ -80,7 +79,6 @@ export default function BorrowForm({
       recipientName: "",
       bankName: BANKS[0],
       accountNumber: "",
-      acknowledgePayout: false,
       acknowledgeRisk: false
     }
   });
@@ -450,10 +448,6 @@ export default function BorrowForm({
       </div>
 
       <div className="space-y-3">
-        <label className="flex items-start gap-3 text-sm text-slate-600">
-          <input type="checkbox" className="mt-1" {...form.register("acknowledgePayout")} />
-          Saya paham pencairan IDR dilakukan manual oleh admin.
-        </label>
         <label className="flex items-start gap-3 text-sm text-slate-600">
           <input type="checkbox" className="mt-1" {...form.register("acknowledgeRisk")} />
           Saya paham risiko liquidasi jika LTV mencapai 95%.
