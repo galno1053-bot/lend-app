@@ -42,8 +42,11 @@ export default function BorrowTokenPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="space-y-4 lg:hidden">
+          <TreasuryAvailability />
+        </div>
         <BorrowForm selectedToken={token} allowedTokens={[token]} />
-        <div className="space-y-4 lg:sticky lg:top-24 self-start">
+        <div className="space-y-4 lg:sticky lg:top-24 self-start hidden lg:block">
           <TreasuryAvailability />
         </div>
       </div>
